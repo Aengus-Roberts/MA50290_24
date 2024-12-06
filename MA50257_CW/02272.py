@@ -169,14 +169,14 @@ def runSimulations(s):
 def makeS1Plots(AvgSystem):
     # Creating arrays to plot
     # x-axis vectors: time and ecDNA states
-    kVals1 = np.arange(0, 20, 1)  # Creates vectors of integers 0-19 (first twenty states) to plot
+    kVals1 = np.arange(0, 21, 1)  # Creates vectors of integers 0-19 (first twenty states) to plot
     times = np.arange(0, 10.01, 0.01)  # Array for time data (bins: 0,0.01,0.02,0.03 ... 9.98,9.99,10.00)
 
     # y-axis vectors: N0,N, Particle count in final state
     N0 = AvgSystem[1:, 0]
     N = np.sum(AvgSystem, axis=1)[1:]
     Nplus = N - N0  # Calculates Mean N+ Value from N+ + N- = N (where N- = N0)
-    finalStates = AvgSystem[-1, :20]  # Obtains average number of cells in each of the first 20 states
+    finalStates = AvgSystem[-1, :21]  # Obtains average number of cells in each of the first 20 states
     finalStatesNormalised = finalStates / N[-1]
     print('Calculating Moments')
     moment1, moment2 = getMomentTimeSeries(AvgSystem)
@@ -190,60 +190,67 @@ def makeS1Plots(AvgSystem):
 
     # End State Histogram Plot
     plt.title(r'Final State Histogram, $s=1$')
-    plt.bar(kVals1, finalStatesNormalised)
-    plt.xticks(np.arange(0, 20, 1))
+    plt.bar(kVals1, finalStatesNormalised) #Plotting the bar chart
+    plt.xticks(np.arange(0, 21, 1))
     plt.xlabel('Number of ecDNA copies = k')
-    plt.ylabel(r'$\frac{N_k(t=10)}{N(t=10)}$', rotation=0, fontsize=14, labelpad=30)
-    plt.show(bbox_inches='tight')
+    plt.ylabel(r'$\rho_k(t=10)$')
+    plt.savefig('/Users/aengus/Desktop/Stuff/University/Year 5/MA50257/LaTeX/endstateS1.pdf',format='pdf',dpi=600)
+    plt.show()
+
 
     # 1st moment plot
     plt.title(r'$M^1$ Simulated/Theoretical, $s=1$')
     plt.plot(times, moment1, label=r'Simulated $M^1(t)$')  # Plotting time (x-axis) against moment1 (y-axis)
     plt.plot(times, theoreticalM1,
-             label=r'Theoretical $M^1(t) = 1$')  # Plotting time (x-axis) against theoreticalM1 (y-axis) on same graph
+             label=r'Theoretical $M^1(t) = 1$',linestyle='--')  # Plotting time (x-axis) against theoreticalM1 (y-axis) on same graph
     plt.xlabel('t')
     plt.ylabel(r'Average of $M^{1}(t) = \sum_k k*N_k(t)$')
     plt.legend()
+    plt.savefig('/Users/aengus/Desktop/Stuff/University/Year 5/MA50257/LaTeX/m1s1.pdf',format='pdf',dpi=600)
     plt.show()  # Displays Plot
 
     # second moment plot
     plt.title(r'$M^2$ Simulated/Theoretical, $s=1$')
     plt.plot(times, moment2, label=r'Simulated $M^2(t)$')  # Plotting time (x-axis) against moment2 (y-axis)
     plt.plot(times, theoreticalM2,
-             label=r'Theoretical $M^2(t) = t + 1$')  # Plotting time (x-axis) against theoreticalM2 (y-axis) on same graph
+             label=r'Theoretical $M^2(t) = t + 1$',linestyle='--')  # Plotting time (x-axis) against theoreticalM2 (y-axis) on same graph
     plt.legend()
     plt.xlabel('t')
     plt.ylabel(r'Average of $M^2(t) = \sum_k k^2*N_k(t)$')
+    plt.savefig('/Users/aengus/Desktop/Stuff/University/Year 5/MA50257/LaTeX/m2s1.pdf',format='pdf',dpi=600)
     plt.show()  # Displays Plot
 
     # N- / N+ plot
     plt.title(r'$N^-/N^+$ Simulated/Theoretical, $s=1$')
     plt.plot(times, N0 / Nplus, label=r'Simulated $N^-(t) / N^+ (t)$')  # Plotting time (x-axis) against N-/N+ (y-axis)
     plt.plot(times, theoreticalNratio,
-             label=r'Theoretical $N^-(t) / N^+(t) = t / 2$')  # Plotting time (x-axis) against theoretical N-/N+ (y-axis) on same graph
+             label=r'Theoretical $N^-(t) / N^+(t) = t / 2$',linestyle='--')  # Plotting time (x-axis) against theoretical N-/N+ (y-axis) on same graph
     plt.legend()
     plt.xlabel('t')
     plt.ylabel(r'$N^-(t) / N^+ (t)$')
+    plt.savefig('/Users/aengus/Desktop/Stuff/University/Year 5/MA50257/LaTeX/nratioS1.pdf',format='pdf',dpi=600)
     plt.show()  # Displays Plot
 
     # f- plot
     plt.title(r'$f^-$ Simulated/Theoretical, $s=1$')
     plt.plot(times, N0 / N, label=r'Simulated $f^-(t)$')  # Plotting time (x-axis) against N-/N (y-axis)
     plt.plot(times, theoreticalfminus,
-             label=r'Theoretical $f^-(t) = t/(2+t)$')  # Plotting time (x-axis) against theoretical f- (y-axis) on same graph
+             label=r'Theoretical $f^-(t) = t/(2+t)$',linestyle='--')  # Plotting time (x-axis) against theoretical f- (y-axis) on same graph
     plt.legend()
     plt.xlabel('t')
     plt.ylabel(r'$f^-(t)$')
+    plt.savefig('/Users/aengus/Desktop/Stuff/University/Year 5/MA50257/LaTeX/f-S1.pdf',format='pdf',dpi=600)
     plt.show()  # Displays Plot
 
     # f+ plot
     plt.title(r'$f^+$ Simulated/Theoretical, $s=1$')
     plt.plot(times, Nplus / N, label=r'Simulated $f^+(t)$')  # Plotting time (x-axis) against N+/N (y-axis)
     plt.plot(times, theoreticalfplus,
-             label=r'Theoretical $f^+(t) = 2/(2+t)$')  # Plotting time (x-axis) against theoretical f+ (y-axis) on same graph
+             label=r'Theoretical $f^+(t) = 2/(2+t)$',linestyle='--')  # Plotting time (x-axis) against theoretical f+ (y-axis) on same graph
     plt.legend()
     plt.xlabel('t')
     plt.ylabel(r'$f^+(t)$')
+    plt.savefig('/Users/aengus/Desktop/Stuff/University/Year 5/MA50257/LaTeX/f+S1.pdf',format='pdf',dpi=600)
     plt.show()  # Displays Plot
 
     return 0
@@ -252,12 +259,12 @@ def makeS1Plots(AvgSystem):
 def makeS2Plots(AvgSystem):
     # Creating arrays to plot
     # x-axis vectors: time and ecDNA states
-    kVals = np.arange(0, 50, 1)  # Creates vectors of integers 0-49 (first fifty states) to plot
+    kVals = np.arange(0, 51, 1)  # Creates vectors of integers 0-49 (first fifty states) to plot
     times = np.arange(0, 8.01, 0.01)  # Array for time data (bins: 0,0.01,0.02,0.03 ... 7.98,7.99,8.00)
 
     # y-axis vectors: N,M1,M2, Particle count in final state
     N = np.sum(AvgSystem, axis=1)[1:]
-    finalStates = AvgSystem[-1, :50]  # Obtains average number of cells in each of the first 20 states
+    finalStates = AvgSystem[-1, :51]  # Obtains average number of cells in each of the first 20 states
     finalStatesNormalised = finalStates / N[-1]
     print('Calculating Moments')
     moment1, moment2 = getMomentTimeSeries(AvgSystem)
@@ -266,9 +273,10 @@ def makeS2Plots(AvgSystem):
     # End State Histogram Plot
     plt.title(r'Final State Histogram, $s=2$')
     plt.bar(kVals, finalStatesNormalised)
-    plt.xticks(np.arange(0, 50, 2))
+    plt.xticks(np.arange(0, 51, 2))
     plt.xlabel('Number of ecDNA copies = k')
-    plt.ylabel(r'$\frac{N_k(t=8)}{N(t=8)}$', rotation=0, fontsize=14, labelpad=30)
+    plt.ylabel(r'$\rho_k(t=8)$')
+    plt.savefig('/Users/aengus/Desktop/Stuff/University/Year 5/MA50257/LaTeX/endstateS2.pdf',format='pdf',dpi=600)
     plt.show()
 
     # 1st moment plot
@@ -276,6 +284,7 @@ def makeS2Plots(AvgSystem):
     plt.plot(times, moment1, label=r'Simulated $M^1(t)$')  # Plotting time (x-axis) against moment1 (y-axis)
     plt.xlabel('t')
     plt.ylabel(r'Average of $M^{1}(t) = \sum_k k*N_k(t)$')
+    plt.savefig('/Users/aengus/Desktop/Stuff/University/Year 5/MA50257/LaTeX/m1s2.pdf',format='pdf',dpi=600)
     plt.show()  # Displays Plot
 
     # second moment plot
@@ -283,6 +292,7 @@ def makeS2Plots(AvgSystem):
     plt.plot(times, moment2, label=r'Simulated $M^2(t)$')  # Plotting time (x-axis) against moment2 (y-axis)
     plt.xlabel('t')
     plt.ylabel(r'Average of $M^2(t) = \sum_k k^2*N_k(t)$')
+    plt.savefig('/Users/aengus/Desktop/Stuff/University/Year 5/MA50257/LaTeX/m2s2.pdf',format='pdf',dpi=600)
     plt.show()  # Displays Plot
 
     return 0
